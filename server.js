@@ -23,11 +23,14 @@ app.use(express.static('public'));
 // GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
 app.get("/api/notes", function(req, res) {
   // use fs module to read the file
-
-  // then parse file contents with JSON.parse() to get real data
-
-  // send parse data back to the client with res.json()
-  // 
+  fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
+    if (err) throw err;
+  
+    // then parse file contents with JSON.parse() to get real data and return as JSON
+    let contents = JSON.parse(data);
+    res.json(contents);
+    // res.end(data);
+  });
 });
 
 // POST `/api/notes` - Should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client.
@@ -56,20 +59,12 @@ app.delete("/api/notes/:id", function(req, res) {
 
 // returns notes.html
 app.get("/notes", function(req, res) {
-  // res.send("Welcome... to the Note Taker!");
-  // res.sendFile("./public/notes.html");
-        res.sendFile(path.join(__dirname + "\\public", "notes.html"));
-
-
-
+  res.sendFile(path.join(__dirname + "\\public", "notes.html"));
 });
 
 // this needs to go last and always return index.html
 app.get("*", function(req, res) {
-    res.send("Welome... to the Note Taker!");
-    // return context of index.html
-    //     res.sendFile(path.join(__dirname, "index.html"));
-
+    res.sendFile(path.join(__dirname + "\\public", "index.html"));
   });
 
 
