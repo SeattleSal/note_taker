@@ -42,18 +42,16 @@ app.post("/api/notes", function(req, res) {
   fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
     if (err) throw err;
   
-    // then parse file contents with JSON.parse() to get real data and return as JSON
+    // parse file contents with JSON.parse() to get real data and return as JSON
     let contents = JSON.parse(data);
     contents.push(newNote);
     let contentString = JSON.stringify(contents);
     
+    // add new note to db.json and refresh page
     fs.writeFile(path.join(__dirname + "\\db\\db.json"), contentString, function(err) {
       if (err) throw err;
-      console.log("DB written!");
       res.json(contents);
     });
-    // TO DO - do i need a res.end?
-    // res.end(data);
   });
 });
 
