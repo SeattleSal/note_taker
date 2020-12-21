@@ -2,7 +2,6 @@
 // Dependencies
 // ===========================================================
 var express = require("express");
-// import fs moduel
 var fs = require("fs");
 var path = require('path');
 
@@ -89,21 +88,17 @@ app.delete("/api/notes/:id", function(req, res) {
       res.json(notesAllString);
     });
   });
-  // (option1)find matching index using findIndex
-  // remove target element using splice
-  // (option2) use filter
-
 });
 
 
 // returns notes.html
 app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname + "\\public", "notes.html"));
+  res.sendFile(path.join(__dirname, "\\public\\notes.html"));
 });
 
-// this needs to go last and always return index.html
+// return index.html
 app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname + "\\public", "index.html"));
+    res.sendFile(path.join(__dirname, "\\public\\index.html"));
   });
 
 
