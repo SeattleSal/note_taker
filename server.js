@@ -4,6 +4,7 @@
 var express = require("express");
 var fs = require("fs");
 var path = require('path');
+const PUBLIC_DIR = path.resolve(__dirname, "public");
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // make public folder available
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Routes
 // ===========================================================
@@ -89,12 +90,12 @@ app.delete("/api/notes/:id", function(req, res) {
 
 // returns notes.html
 app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname, "public/notes.html"));
+  res.sendFile(path.join(PUBLIC_DIR, "notes.html"));
 });
 
 // return index.html
 app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "public/index.html"));
+    res.sendFile(path.join(PUBLIC_DIR, "index.html"));
   });
 
 
