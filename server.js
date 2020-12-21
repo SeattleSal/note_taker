@@ -46,6 +46,7 @@ app.post("/api/notes", function(req, res) {
   
     // parse file contents with JSON.parse() to get real data and return as JSON
     let notesAll = JSON.parse(data);
+    console.log(notesAll);
     notesAll.push(newNote);
     let notesAlltring = JSON.stringify(notesAll);
     
@@ -57,14 +58,37 @@ app.post("/api/notes", function(req, res) {
   });
 });
 
-// DELETE `/api/notes/:id` - Should receive a query parameter containing the id of a note to delete. This means you'll need to find a way to give each note a unique `id` when it's saved. In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
+// DELETE `/api/notes/:id` - Should receive a query parameter containing the id of a note to delete. 
+// This means you'll need to find a way to give each note a unique `id` when it's saved. 
+// In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
 app.delete("/api/notes/:id", function(req, res) {
   console.log(req.params);
   //access id from req.params
-  // const checkID = req.params.id;
+  const idToDelete = req.params.id;
+  console.log("delete... " + idToDelete);
 
   // use fs module to read the file
   // then parse file contents with JSON.parse() to get real data, put into an object
+  fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
+    if (err) throw err;
+  
+    // parse file contents with JSON.parse() to get real data and return as JSON
+    let notesAll = JSON.parse(data);
+    // console.log(notesAll);
+    // find that note
+    let filteredNotes = notesAll.filter((note) => {
+      return note.id != idToDelete;
+    });
+
+    // console.log(filteredNotes);
+    let notesAllString = JSON.stringify(filteredNotes);
+    
+    // add new note to db.json and refresh page
+    fs.writeFile(path.join(__dirname + "\\db\\db.json"), notesAllString, function(err) {
+      if (err) throw err;
+      res.json(notesAllString);
+    });
+  });
   // (option1)find matching index using findIndex
   // remove target element using splice
   // (option2) use filter
