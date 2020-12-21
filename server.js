@@ -89,12 +89,12 @@ app.delete("/api/notes/:id", function(req, res) {
 
 // returns notes.html
 app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname, "\\public\\notes.html"));
+  res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
 // return index.html
 app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "\\public\\index.html"));
+    res.sendFile(path.join(__dirname, "public/index.html"));
   });
 
 
