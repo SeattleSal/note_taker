@@ -38,14 +38,12 @@ app.post("/api/notes", function(req, res) {
   var newNote = req.body;
   // create random id
   newNote.id = Math.floor(Date.now() / 1000);
-  console.log(newNote);
 
   fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
     if (err) throw err;
   
     // parse file contents with JSON.parse() to get real data and return as JSON
     let notesAll = JSON.parse(data);
-    console.log(notesAll);
     notesAll.push(newNote);
     let notesAlltring = JSON.stringify(notesAll);
     
@@ -61,10 +59,9 @@ app.post("/api/notes", function(req, res) {
 // This means you'll need to find a way to give each note a unique `id` when it's saved. 
 // In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
 app.delete("/api/notes/:id", function(req, res) {
-  console.log(req.params);
   //access id from req.params
   const idToDelete = req.params.id;
-  console.log("delete... " + idToDelete);
+  // console.log("delete... " + idToDelete);
 
   // use fs module to read the file
   // then parse file contents with JSON.parse() to get real data, put into an object
@@ -73,7 +70,6 @@ app.delete("/api/notes/:id", function(req, res) {
   
     // parse file contents with JSON.parse() to get real data and return as JSON
     let notesAll = JSON.parse(data);
-    // console.log(notesAll);
     // find that note
     let filteredNotes = notesAll.filter((note) => {
       return note.id != idToDelete;
