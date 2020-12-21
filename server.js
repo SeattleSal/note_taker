@@ -4,7 +4,6 @@
 var express = require("express");
 var fs = require("fs");
 var path = require('path');
-const PUBLIC_DIR = path.resolve(__dirname, "public");
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -23,7 +22,7 @@ app.use(express.static("public"));
 // GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
 app.get("/api/notes", function(req, res) {
   // use fs module to read the file
-  fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
+  fs.readFile(path.join(__dirname + "\\db\\db.json"), "utf8", function(err, data) {
     if (err) throw err;
   
     // then parse file contents with JSON.parse() to get real data and return as JSON
@@ -40,7 +39,7 @@ app.post("/api/notes", function(req, res) {
   // create random id
   newNote.id = Math.floor(Date.now() / 1000);
 
-  fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
+  fs.readFile(path.join(__dirname + "\\db\\db.json"), "utf8", function(err, data) {
     if (err) throw err;
   
     // parse file contents with JSON.parse() to get real data and return as JSON
@@ -66,7 +65,7 @@ app.delete("/api/notes/:id", function(req, res) {
 
   // use fs module to read the file
   // then parse file contents with JSON.parse() to get real data, put into an object
-  fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
+  fs.readFile(path.join(__dirname + "\\db\\db.json"), "utf8", function(err, data) {
     if (err) throw err;
   
     // parse file contents with JSON.parse() to get real data and return as JSON
