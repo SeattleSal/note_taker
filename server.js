@@ -37,27 +37,33 @@ app.get("/api/notes", function(req, res) {
 app.post("/api/notes", function(req, res) {
   // access the POSTed data in req.body
   var newNote = req.body;
+  // create random id
+  newNote.id = randomNumber();
+  // const randomID = uuidv4(); ???
   console.log(newNote);
 
   fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
     if (err) throw err;
   
     // parse file contents with JSON.parse() to get real data and return as JSON
-    let contents = JSON.parse(data);
-    contents.push(newNote);
-    let contentString = JSON.stringify(contents);
+    let notesAll = JSON.parse(data);
+    notesAll.push(newNote);
+    let notesAlltring = JSON.stringify(notesAll);
     
     // add new note to db.json and refresh page
-    fs.writeFile(path.join(__dirname + "\\db\\db.json"), contentString, function(err) {
+    fs.writeFile(path.join(__dirname + "\\db\\db.json"), notesAlltring, function(err) {
       if (err) throw err;
-      res.json(contents);
+      res.json(notesAll);
     });
   });
 });
 
 // DELETE `/api/notes/:id` - Should receive a query parameter containing the id of a note to delete. This means you'll need to find a way to give each note a unique `id` when it's saved. In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
 app.delete("/api/notes/:id", function(req, res) {
+  console.log(req.params);
   //access id from req.params
+  // const checkID = req.params.id;
+
   // use fs module to read the file
   // then parse file contents with JSON.parse() to get real data, put into an object
   // (option1)find matching index using findIndex
@@ -84,3 +90,9 @@ app.get("*", function(req, res) {
 app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
   });
+
+// randomNumber
+// Input is an array, returns random number between 0 to 100
+function randomNumber() {
+  return Math.floor((Math.random() * (100 - 1) + 1));
+}
