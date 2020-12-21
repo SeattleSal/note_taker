@@ -38,8 +38,7 @@ app.post("/api/notes", function(req, res) {
   // access the POSTed data in req.body
   var newNote = req.body;
   // create random id
-  newNote.id = randomNumber();
-  // const randomID = uuidv4(); ???
+  newNote.id = Math.floor(Date.now() / 1000);
   console.log(newNote);
 
   fs.readFile(path.join(__dirname + "\\db\\db.json"), function(err, data) {
@@ -91,8 +90,3 @@ app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
   });
 
-// randomNumber
-// Input is an array, returns random number between 0 to 100
-function randomNumber() {
-  return Math.floor((Math.random() * (100 - 1) + 1));
-}
