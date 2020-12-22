@@ -12,7 +12,7 @@
 Note Taker is an application that can be used to write, save and delete notes. The application uses and Express backend to save and retrieve note data from a JSON file.
 
 ## Dependencies
-The dependencies are [express](http://expressjs.com/) for the web framework. There is a `package.json`, the following commands should be run to install dependencies:
+The dependencies are [express](http://expressjs.com/) for the web framework and [uuid](https://www.npmjs.com/package/uuid) for generating unique ids for each note. There is a `package.json`, the following commands should be run to install dependencies:
 
 ```bash
 npm i
