@@ -1,13 +1,13 @@
 // Note Taker app
 // Dependencies
 // ===========================================================
-var express = require("express");
-var fs = require("fs");
-var path = require('path');
-// TO DO: change these to const from var
-var app = express();
-var PORT = process.env.PORT || 3000;
-const dbJsonArrDir = path.resolve(__dirname, "db");
+const express = require("express");
+const fs = require("fs");
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const dbJsonArrDir = path.resolve(__dirname, "db"); // is this something?
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -18,9 +18,6 @@ app.use(express.static("public"));
 
 // Routes
 // ===========================================================
-
-
-
 // put api routes before html routes
 // GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
 app.get("/api/notes", function(req, res) {
@@ -38,7 +35,7 @@ app.get("/api/notes", function(req, res) {
 // POST `/api/notes` - Should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client.
 app.post("/api/notes", function(req, res) {
   // access the POSTed data in req.body
-  var newNote = req.body;
+  let newNote = req.body;
   // create random id
   newNote.id = Math.floor(Date.now() / 1000);
 
