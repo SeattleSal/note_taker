@@ -4,9 +4,10 @@
 var express = require("express");
 var fs = require("fs");
 var path = require('path');
-
+// TO DO: change these to const from var
 var app = express();
 var PORT = process.env.PORT || 3000;
+const dbJsonArrDir = path.resolve(__dirname, "db");
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -18,11 +19,22 @@ app.use(express.static("public"));
 // Routes
 // ===========================================================
 
+// returns notes.html
+app.get("/notes", function(req, res) {
+  res.sendFile(path.join(__dirname, "public/notes.html"));
+});
+
+// return index.html
+app.get("*", function(req, res) {
+    res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
+
 // put api routes before html routes
 // GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
 app.get("/api/notes", function(req, res) {
   // use fs module to read the file
-  fs.readFile(path.join(__dirname + "\\db\\db.json"), "utf8", function(err, data) {
+  fs.readFile(path.join(__dirname + "db.json"), "utf8", function(err, data) {
     if (err) throw err;
   
     // then parse file contents with JSON.parse() to get real data and return as JSON
@@ -39,7 +51,7 @@ app.post("/api/notes", function(req, res) {
   // create random id
   newNote.id = Math.floor(Date.now() / 1000);
 
-  fs.readFile(path.join(__dirname + "\\db\\db.json"), "utf8", function(err, data) {
+  fs.readFile(path.join(__dirname + "./db/db.json"), "utf8", function(err, data) {
     if (err) throw err;
   
     // parse file contents with JSON.parse() to get real data and return as JSON
@@ -48,7 +60,7 @@ app.post("/api/notes", function(req, res) {
     let notesAlltring = JSON.stringify(notesAll);
     
     // add new note to db.json and refresh page
-    fs.writeFile(path.join(__dirname + "\\db\\db.json"), notesAlltring, function(err) {
+    fs.writeFile(path.join(__dirname + "./db/db.json"), notesAlltring, function(err) {
       if (err) throw err;
       res.json(notesAll);
     });
@@ -65,7 +77,7 @@ app.delete("/api/notes/:id", function(req, res) {
 
   // use fs module to read the file
   // then parse file contents with JSON.parse() to get real data, put into an object
-  fs.readFile(path.join(__dirname + "\\db\\db.json"), "utf8", function(err, data) {
+  fs.readFile(path.join(__dirname + "./db/db.json"), "utf8", function(err, data) {
     if (err) throw err;
   
     // parse file contents with JSON.parse() to get real data and return as JSON
@@ -79,7 +91,7 @@ app.delete("/api/notes/:id", function(req, res) {
     let notesAllString = JSON.stringify(filteredNotes);
     
     // add new note to db.json and refresh page
-    fs.writeFile(path.join(__dirname + "\\db\\db.json"), notesAllString, function(err) {
+    fs.writeFile(path.join(__dirname + "./db/db.json"), notesAllString, function(err) {
       if (err) throw err;
       res.json(notesAllString);
     });
@@ -87,15 +99,7 @@ app.delete("/api/notes/:id", function(req, res) {
 });
 
 
-// returns notes.html
-app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname, "public/notes.html"));
-});
 
-// return index.html
-app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "public/index.html"));
-  });
 
 
   
